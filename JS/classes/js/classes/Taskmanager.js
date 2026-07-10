@@ -24,10 +24,10 @@ export class TaskManager {
     }
 
     handleAddTask() {
-        // HTML selectors aapke UI ke hisaab se (Video me jo fields hain)
-        const titleInput = document.querySelector('input[placeholder="What needs to be done?"]');
-        const prioritySelect = document.querySelector('select'); // Medium Priority dropdown
-        const dateInput = document.querySelector('input[type="date"]');
+       // Purani teeno const lines ko hatakar ye likho:
+const titleInput = document.getElementById('search-input') || document.querySelector('input[type="text"]');
+const prioritySelect = document.getElementById('filter-priority') || document.querySelector('select');
+const dateInput = document.getElementById('task-date') || document.querySelector('input[type="date"]');
 
         // Inputs validation
         if (!titleInput || !titleInput.value.trim()) {
