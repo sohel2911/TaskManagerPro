@@ -1,21 +1,26 @@
-// js/app.js
+// JS/JS/app.js
+
+// Hum exact correct path se TaskManager ko import kar rahe hain
+import { TaskManager } from '../classes/js/classes/Taskmanager.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Apne HTML ke mutabiq sahi ID ko select karo
     const userProfileEl = document.getElementById('user-profile'); 
 
+    // 1. Loading screen ko fix karne ka logic (Jo already chal raha hai)
     try {
-        // Fake delay simulate kar rahe hain
         const userData = await new Promise((resolve) => {
             setTimeout(() => {
                 resolve({ name: "Sohail" });
             }, 1500);
         });
 
-        // 2. MAIN BUG FIX: Text ko badal kar user ka naam dikhao
         if (userProfileEl) {
             userProfileEl.textContent = `User: ${userData.name}`; 
         }
+
+        // 2. 🚨 THE ADD TASK FIX: TaskManager ko yahan initialize karna zaroori hai!
+        console.log("Initializing TaskManager...");
+        const taskManager = new TaskManager();
 
     } catch (error) {
         console.error("User profile load nahi ho paya:", error);
@@ -23,4 +28,4 @@ document.addEventListener('DOMContentLoaded', async () => {
             userProfileEl.textContent = "Error loading user";
         }
     }
-}); // Ye bracket sahi se close hona chahiye
+});
