@@ -73,7 +73,7 @@
                             <option value="office">Office Task</option>
                         </select>
                         <input type="date" id="task-date" required>
-                        <button type="submit" class="btn btn-primary">➕ Add Task</button>
+                        <button type="submit" id="add-task-btn" class="btn btn-primary" onclick="window.taskManagerInstance ? window.taskManagerInstance.handleAddTask() : console.log('Not ready')">Add Task</button>
                     </div>
                 </form>
             </section>
