@@ -1,5 +1,5 @@
 // JS/JS/app.js
-import { TaskManager } from '../classes/js/classes/Taskmanager.js';
+import { TaskManager } from '../classes/js/classes/TaskManager.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const userProfileEl = document.getElementById('user-profile'); 
@@ -16,24 +16,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             userProfileEl.textContent = `User: ${userData.name}`; 
         }
 
-        // TaskManager ko globally banaya gaya
+        // Global context set kar rahe hain taaki HTML button ise dhoondh sake
+        console.log("Initializing TaskManager...");
         window.taskManagerInstance = new TaskManager();
-        console.log("TaskManager properly initialized.");
 
-        // FIX: Form reload rokne ke liye direct listener attach kar diya
         if (addTaskBtn) {
             addTaskBtn.addEventListener('click', (e) => {
-                e.preventDefault(); // Ye browser ko reload hone se rokega!
+                e.preventDefault(); 
                 if (window.taskManagerInstance) {
                     window.taskManagerInstance.handleAddTask();
-                    console.log("Add Task button pressed and function called!");
                 }
             });
-        } else {
-             console.log("Add Task button HTML me nahi mila.");
         }
 
     } catch (error) {
-        console.error("User profile load error:", error);
+        console.error("App setup error:", error);
     }
 });
