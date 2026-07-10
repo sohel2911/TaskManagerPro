@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskManagerPro</title>
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dark.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div class="bg-wrapper"></div>
+
+    <div class="app-container">
+        <aside class="sidebar glass-panel">
+            <h2>Dashboard</h2>
+            <hr>
+            <div class="stats-container">
+                <h3>Statistics</h3>
+                <div class="stat-card">Total Tasks: <span id="stat-total">0</span></div>
+                <div class="stat-card">Completed: <span id="stat-completed">0</span></div>
+                <div class="stat-card">Pending: <span id="stat-pending">0</span></div>
+            </div>
+            <div class="theme-toggle-container">
+                <button id="theme-toggle-btn" class="btn btn-secondary">Toggle Dark Mode</button>
+            </div>
+            <div class="data-actions">
+                <button id="export-btn" class="btn btn-secondary">Export JSON</button>
+                <div class="file-input-wrapper">
+                    <button class="btn btn-secondary">Import JSON</button>
+                    <input type="file" id="import-input" accept=".json">
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="app-header glass-panel">
+                <h1>TaskManagerPro</h1>
+                <div id="user-profile" class="user-profile">Loading user...</div>
+            </header>
+
+            <div id="async-banner" class="banner hidden"></div>
+
+            <section class="controls-panel glass-panel">
+                <input type="text" id="search-input" placeholder="Search tasks (Debounced)..." autocomplete="off">
+                <select id="filter-priority">
+                    <option value="all">All Priorities</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+                <select id="filter-status">
+                    <option value="all">All Statuses</option>
+                    <option value="completed">Completed</option>
+                    <option value="pending">Pending</option>
+                </select>
+            </section>
+
+            <section class="form-panel glass-panel">
+                <form id="task-form">
+                    <div class="form-row">
+                        <input type="text" id="task-title" placeholder="What needs to be done?" required>
+                        <select id="task-priority">
+                            <option value="low">Low Priority</option>
+                            <option value="medium" selected>Medium Priority</option>
+                            <option value="high">High Priority</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <select id="task-type">
+                            <option value="personal">Personal Task</option>
+                            <option value="office">Office Task</option>
+                        </select>
+                        <input type="date" id="task-date" required>
+                        <button type="submit" class="btn btn-primary">Add Task</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="tasks-container glass-panel" id="scrollable-task-zone">
+                <h2>Active Tasks</h2>
+                <div id="tasks-wrapper" class="tasks-wrapper">
+                    </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

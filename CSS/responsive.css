@@ -1,0 +1,28 @@
+/* Responsive Structural Viewport Modifiers */
+@media (max-width: 900px) {
+    .app-container {
+        grid-template-columns: 1fr;
+        height: auto;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .sidebar {
+        height: auto;
+    }
+    .main-content {
+        height: auto;
+        overflow: visible;
+    }
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .task-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}

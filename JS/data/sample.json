@@ -1,0 +1,16 @@
+[
+  {
+    "title": "Architect Infrastructure Core System Blueprint",
+    "priority": "high",
+    "dueDate": "2026-08-15",
+    "completed": false,
+    "type": "office"
+  },
+  {
+    "title": "Review Functional Closures and Context Handlers",
+    "priority": "medium",
+    "dueDate": "2026-07-20",
+    "completed": true,
+    "type": "personal"
+  }
+]

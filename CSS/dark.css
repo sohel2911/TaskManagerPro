@@ -1,0 +1,24 @@
+/* Dark Mode Structural Overrides */
+body.dark-mode {
+    --glass-bg: rgba(15, 23, 42, 0.55);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode input[type="text"], 
+body.dark-mode input[type="date"], 
+body.dark-mode select {
+    background: rgba(30, 41, 59, 0.7);
+    color: var(--text-main);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .task-item {
+    background: rgba(30, 41, 59, 0.4);
+}
+
+body.dark-mode .stat-card {
+    background: rgba(0, 0, 0, 0.2);
+}
