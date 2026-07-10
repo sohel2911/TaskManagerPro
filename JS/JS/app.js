@@ -1,5 +1,6 @@
 // JS/JS/app.js
-import { TaskManager } from '../classes/js/classes/TaskManager.js';
+// JS/JS/app.js ke sabse upar ye absolute path daalo
+import { TaskManager } from '/TaskManagerPro/js/classes/TaskManager.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const userProfileEl = document.getElementById('user-profile'); 
