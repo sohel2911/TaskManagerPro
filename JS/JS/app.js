@@ -1,12 +1,10 @@
 // JS/JS/app.js
-
-// Hum exact correct path se TaskManager ko import kar rahe hain
 import { TaskManager } from '../classes/js/classes/Taskmanager.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const userProfileEl = document.getElementById('user-profile'); 
+    const addTaskBtn = document.getElementById('add-task-btn');
 
-    // 1. Loading screen ko fix karne ka logic (Jo already chal raha hai)
     try {
         const userData = await new Promise((resolve) => {
             setTimeout(() => {
@@ -18,14 +16,24 @@ document.addEventListener('DOMContentLoaded', async () => {
             userProfileEl.textContent = `User: ${userData.name}`; 
         }
 
-        // 2. 🚨 THE ADD TASK FIX: TaskManager ko yahan initialize karna zaroori hai!
-        console.log("Initializing TaskManager...");
-        const taskManager = new TaskManager();
+        // TaskManager ko globally banaya gaya
+        window.taskManagerInstance = new TaskManager();
+        console.log("TaskManager properly initialized.");
+
+        // FIX: Form reload rokne ke liye direct listener attach kar diya
+        if (addTaskBtn) {
+            addTaskBtn.addEventListener('click', (e) => {
+                e.preventDefault(); // Ye browser ko reload hone se rokega!
+                if (window.taskManagerInstance) {
+                    window.taskManagerInstance.handleAddTask();
+                    console.log("Add Task button pressed and function called!");
+                }
+            });
+        } else {
+             console.log("Add Task button HTML me nahi mila.");
+        }
 
     } catch (error) {
-        console.error("User profile load nahi ho paya:", error);
-        if (userProfileEl) {
-            userProfileEl.textContent = "Error loading user";
-        }
+        console.error("User profile load error:", error);
     }
 });
