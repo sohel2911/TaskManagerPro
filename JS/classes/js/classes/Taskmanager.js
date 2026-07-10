@@ -1,90 +1,81 @@
-// Task Management Domain Model Controller Class
-import { PersonalTask, OfficeTask } from './Task.js';
+// js/classes/TaskManager.js
+import { Task } from './Task.js'; // Session 6 ke mutabiq class import
 
 export class TaskManager {
     constructor() {
-        this.tasksCollection = [];
+        this.tasks = []; // Tasks store karne ke liye array
+        this.initEventListeners();
     }
 
-    addTask(taskNodeInstance) {
-        this.tasksCollection.push(taskNodeInstance);
-    }
-
-    removeTask(targetTaskId) {
-        this.tasksCollection = this.tasksCollection.filter(t => t.id !== targetTaskId);
-    }
-
-    toggleTask(targetTaskId) {
-        const found = this.tasksCollection.find(t => t.id === targetTaskId);
-        if (found) {
-            // Demo Method Execution Binding Context Logic safely
-            found.toggleCompletionState.call(found);
-        }
-    }
-
-    // Session 7: Structural Deep Copying implementation using structuredClone
-    duplicateTask(targetTaskId) {
-        const rawMatch = this.tasksCollection.find(t => t.id === targetTaskId);
-        if (rawMatch) {
-            const deepClonedProperties = structuredClone(rawMatch);
-            
-            let duplicatedInstance;
-            if (deepClonedProperties.type === 'personal') {
-                duplicatedInstance = new PersonalTask(deepClonedProperties.title + " (Copy)", deepClonedProperties.priority, deepClonedProperties.dueDate);
-            } else {
-                duplicatedInstance = new OfficeTask(deepClonedProperties.title + " (Copy)", deepClonedProperties.priority, deepClonedProperties.dueDate);
-            }
-            duplicatedInstance.completed = deepClonedProperties.completed;
-            this.addTask(duplicatedInstance);
-        }
-    }
-
-    searchTasks(searchQueryString) {
-        if (!searchQueryString) return this.tasksCollection;
-        const normalized = searchQueryString.toLowerCase().trim();
-        return this.tasksCollection.filter(t => t.title.toLowerCase().includes(normalized));
-    }
-
-    getStats() {
-        const total = this.tasksCollection.length;
-        const completed = this.tasksCollection.filter(t => t.completed).length;
-        return {
-            total,
-            completed,
-            pending: total - completed
-        };
-    }
-
-    getAllTasks() {
-        return this.tasksCollection;
-    }
-
-    hydrate(plainArrayObjects) {
-        this.tasksCollection = [];
-        plainArrayObjects.forEach(rawItem => {
-            let instance;
-            if (rawItem.type === 'personal') {
-                instance = new PersonalTask(rawItem.title, rawItem.priority, rawItem.dueDate);
-            } else {
-                instance = new OfficeTask(rawItem.title, rawItem.priority, rawItem.dueDate);
-            }
-            instance.id = rawItem.id || instance.id;
-            instance.completed = !!rawItem.completed;
-            this.addTask(instance);
-        });
-    }
-
-    // Session 7: Custom Iterator Implementation Interface
-    [Symbol.iterator]() {
-        let currentIterationIndex = 0;
-        const items = this.tasksCollection;
-        return {
-            next() {
-                if (currentIterationIndex < items.length) {
-                    return { value: items[currentIterationIndex++], done: false };
+    initEventListeners() {
+        // Form aur Add Button ko select kar rahe hain
+        const taskForm = document.querySelector('form') || document.getElementById('add-task-btn');
+        
+        if (taskForm) {
+            // 🚨 BUG FIX: Arrow function use karne se 'this' ka context TaskManager hi rahega
+            taskForm.addEventListener('click', (e) => {
+                // Agar button pure form ke andar hai toh default reload roko
+                if (e.target.id === 'add-task-btn' || e.target.type === 'submit') {
+                    e.preventDefault(); 
+                    this.handleAddTask();
                 }
-                return { done: true };
-            }
-        };
+            });
+        }
+    }
+
+    handleAddTask() {
+        // HTML selectors aapke UI ke hisaab se (Video me jo fields hain)
+        const titleInput = document.querySelector('input[placeholder="What needs to be done?"]');
+        const prioritySelect = document.querySelector('select'); // Medium Priority dropdown
+        const dateInput = document.querySelector('input[type="date"]');
+
+        // Inputs validation
+        if (!titleInput || !titleInput.value.trim()) {
+            alert("Kuch task toh likho bhai!");
+            return;
+        }
+
+        const taskTitle = titleInput.value.trim();
+        const taskPriority = prioritySelect ? prioritySelect.value : 'Medium';
+        const taskDate = dateInput ? dateInput.value : '';
+
+        // Session 6 ke mutabiq new Task object create karna
+        const newTask = new Task(taskTitle, taskPriority, taskDate);
+        
+        // Array me push karna
+        this.tasks.push(newTask);
+
+        // 🌟 Input clear karna task add hone ke baad
+        titleInput.value = '';
+
+        // UI aur Stats ko update karne ke liye calls
+        this.renderTasks();
+        this.updateStatistics();
+        
+        // Session 8 ke mutabiq local storage me save karna
+        this.saveToLocalStorage();
+    }
+
+    updateStatistics() {
+        // Left side dashboard stats update karne ke liye
+        const totalTasksEl = document.getElementById('total-tasks') || document.querySelector('.statistics div:nth-child(2)'); // UI ke mutabiq select karein
+        const pendingTasksEl = document.getElementById('pending-tasks');
+
+        if (totalTasksEl) {
+            totalTasksEl.textContent = `Total Tasks: ${this.tasks.length}`;
+        }
+    }
+
+    renderTasks() {
+        const activeTasksContainer = document.querySelector('.main-content section:last-of-type') || document.getElementById('active-tasks');
+        
+        if (!activeTasksContainer) return;
+
+        // Purana list clear karo pehle
+        // (Iske aage ka render HTML aapki ui.js ya isi file me handle hoga)
+    }
+
+    saveToLocalStorage() {
+        localStorage.setItem('tasks', JSON.stringify(this.tasks));
     }
 }

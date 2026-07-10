@@ -1,26 +1,26 @@
-// Context Orchestrator and Session Context Interfaces
-import { TaskManager } from './classes/TaskManager.js';
-import { User } from './classes/User.js';
-import * as storage from './modules/storage.js';
-import * as api from './modules/api.js';
+// js/app.js
 
-export const AppState = {
-    taskManager: new TaskManager(),
-    currentUser: new User("Guest System Architect"),
-    
-    async initialize() {
-        // Session 5: Async Initialization via Promises/Await
-        try {
-            const cachedTasks = storage.loadTasks();
-            if (cachedTasks && cachedTasks.length > 0) {
-                AppState.taskManager.hydrate(cachedTasks);
-            } else {
-                const standardFallback = await api.fetchSampleData();
-                AppState.taskManager.hydrate(standardFallback);
-                storage.saveTasks(AppState.taskManager.getAllTasks());
-            }
-        } catch (error) {
-            console.error("System Hydration Failure:", error);
+document.addEventListener('DOMContentLoaded', async () => {
+    // 1. Apne HTML ke mutabiq sahi ID ko select karo
+    const userProfileEl = document.getElementById('user-profile'); 
+
+    try {
+        // Fake delay simulate kar rahe hain
+        const userData = await new Promise((resolve) => {
+            setTimeout(() => {
+                resolve({ name: "Sohail" });
+            }, 1500);
+        });
+
+        // 2. MAIN BUG FIX: Text ko badal kar user ka naam dikhao
+        if (userProfileEl) {
+            userProfileEl.textContent = `User: ${userData.name}`; 
+        }
+
+    } catch (error) {
+        console.error("User profile load nahi ho paya:", error);
+        if (userProfileEl) {
+            userProfileEl.textContent = "Error loading user";
         }
     }
-};
+}); // Ye bracket sahi se close hona chahiye
